@@ -6,8 +6,18 @@
 Created on Thu Oct 20 00:31:17 2022
 
 @author: sirui qi
-"""
 
+this python is divided into cells by the "#%%", and each cell corresponds to one part of exercise in intermediate python workshop 
+
+please run this cell before following cells, this cell wiil help you import all needed packages in following cells
+
+use the "run the current cell and go to the next cell" button on upper toolbar, and its hot key is "shirft + enter"
+
+"""
+import pandas as pd # Import the Panda package and name it as pd for convenience
+import os
+import plotnine as p9
+#%%
 ##1
 
 print('the type of 10:', type(10))
@@ -26,9 +36,10 @@ except Exception as e:
 print("the type of '10.0'+'10':", type('10.0'+'10'))
 print("the result of '10.0'+'10':", '10.0'+'10')
 
+#%%
 ##2
 
-import pandas as pd # Import the Panda package and name it as pd for convenience
+
 surveys_df = pd.read_csv("data/surveys.csv") # load the dataframe by panda
 print('type of surveys_df:', type(surveys_df), '\n')  
 print('type of each column in surveys_df:')
@@ -42,11 +53,9 @@ print('type of plot_id:', surveys_df['plot_id'].dtype)
 surveys_df.plot_id.astype("float")
 print('type of plot_id:', surveys_df['plot_id'].dtype)
 
-
+#%%
 ##3
 
-import os
-import pandas as pd # Import the Panda package and name it as pd for convenience
 surveys_df = pd.read_csv("data/surveys.csv") # load the dataframe by panda
 print(surveys_df)
 df_na = surveys_df.dropna()
@@ -55,10 +64,9 @@ df_na.to_csv('data/surveys_complete.csv', index=False)
 print()
 print(os.listdir('data'))
 
+#%%
 ##4
 
-import os
-import pandas as pd # Import the Panda package and name it as pd for convenience
 surveys_df = pd.read_csv("data/surveys.csv") # load the dataframe by panda
 print('surveys_df:')
 print(surveys_df)
@@ -76,10 +84,9 @@ horizontal_stack = pd.concat([survey_sub_first10, survey_sub_last10], axis=1)
 print("\nhorizontal_stack:")
 print(horizontal_stack)
 
+#%%
 ##5
 
-import os
-import pandas as pd # Import the Panda package and name it as pd for convenience
 surveys_df = pd.read_csv("data/surveys.csv") # load the dataframe by panda
 survey_sub = surveys_df.head(10)
 species_sub = pd.read_csv('data/speciesSubset.csv', keep_default_na=False, na_values=[""])
@@ -94,6 +101,7 @@ print('the shape of merged_left:', merged_left.shape)
 print('\nleft join:')
 print(merged_left)
 
+#%%
 ##6
 
 animals = ['lion', 'tiger', 'crocodile', 'vulture', 'hippo'] # create a str list
@@ -106,7 +114,6 @@ print()
 for creature in animals: 
     print('The loop variable is now: ' + creature)
 print()
-import pandas as pd
 surveys_df = pd.read_csv('data/surveys.csv')
 surveys_2002 = surveys_df[surveys_df.year == 2002]
 surveys_2002.to_csv('data/surveys_2002.csv')
@@ -116,11 +123,10 @@ for year in surveys_df['year'].unique():
     print(filename)
     surveys_year = surveys_df[surveys_df.year == year]
     surveys_year.to_csv(filename)
-import os
 print()
 print(os.listdir('data'))
 
-
+#%%
 ## 7
 def this_is_the_function_name(input_argument1, input_argument2):
 
@@ -148,10 +154,8 @@ def one_year_csv_writer(this_year, all_data):
     filename = 'data/function_surveys_' + str(this_year) + '.csv'
     surveys_year.to_csv(filename)
 
-import pandas as pd
 surveys_df = pd.read_csv('data/surveys.csv')
 one_year_csv_writer(2002, surveys_df)
-import os
 print(os.listdir('data'))
 
 def yearly_data_csv_writer(start_year, end_year, all_data):
@@ -168,13 +172,11 @@ def yearly_data_csv_writer(start_year, end_year, all_data):
         one_year_csv_writer(year, all_data)
 
 yearly_data_csv_writer(1977, 2002, surveys_df)
-import os
 print(os.listdir('data'))
 
+#%%
 ##8
 
-import plotnine as p9
-import pandas as pd
 surveys_complete = pd.read_csv('data/surveys.csv')
 surveys_complete = surveys_complete.dropna()
 p9.ggplot(data=surveys_complete)
@@ -193,10 +195,9 @@ print(surveys_plot
       + p9.theme_bw()
       + p9.theme(text=p9.element_text(size=16)))
 
+#%%
 ##9
 
-import plotnine as p9
-import pandas as pd
 surveys_complete = pd.read_csv('data/surveys.csv')
 surveys_complete = surveys_complete.dropna()
 p9.ggplot(data=surveys_complete)
@@ -217,10 +218,9 @@ print(surveys_plot + p9.geom_point(alpha=0.1) + p9.facet_wrap("sex"))
 print(surveys_plot + p9.geom_point(alpha=0.1) + p9.facet_wrap("plot_id"))
 print(surveys_plot + p9.geom_point(alpha=0.1) + p9.facet_grid("year ~ sex"))
 
+#%%
 ##10
 
-import plotnine as p9
-import pandas as pd
 surveys_complete = pd.read_csv('data/surveys.csv')
 surveys_complete = surveys_complete.dropna()
 surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='factor(year)'))
