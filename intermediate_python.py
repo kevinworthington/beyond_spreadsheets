@@ -174,64 +174,92 @@ def yearly_data_csv_writer(start_year, end_year, all_data):
 yearly_data_csv_writer(1977, 2002, surveys_df) #pass the year range and dataframe to the 'yearly_data_csv_writer' function
 print(os.listdir('data'))
 
+
+
 #%%
-##plotnine practice
+### Making Plots With plotnine
+
+## Plotting with plotnine
+
+import plotnine as p9
+
 
 surveys_complete = pd.read_csv('data/surveys.csv')
 surveys_complete = surveys_complete.dropna()
-p9.ggplot(data=surveys_complete) #pass dataframe to the plotnine package
-surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='weight', y='hindfoot_length')) #the variable surveys_plot is like a canvas
-print(surveys_plot) #this will only show the canvas
-print(surveys_plot +  p9.geom_point()) #this will show both the canvas and the data graph
-print(surveys_plot + p9.geom_point(alpha=0.1)) #this will a add extra setting to the data graph
-print(surveys_plot + p9.geom_point(alpha=0.1, color='blue'))
-
-surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='weight', y='hindfoot_length', color='species_id')) #change the canvas
-print(surveys_plot + p9.geom_point(alpha=0.1))
-print(surveys_plot
-      + p9.geom_point(alpha=0.1) 
-      + p9.xlab("Weight (g)")
-      + p9.scale_x_log10()
-      + p9.theme_bw()
-      + p9.theme(text=p9.element_text(size=16)))
-
-#%%
-##change X/Y axis of your canvas and split plots
-
-surveys_complete = pd.read_csv('data/surveys.csv')
-surveys_complete = surveys_complete.dropna()
-p9.ggplot(data=surveys_complete)
-surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='species_id', y='weight'))#compare with above cell, you will see the X/Y have changed
-print(surveys_plot + p9.geom_boxplot()) #this will create a box plot
-
-yearly_counts = surveys_complete.groupby(['year', 'species_id'])['species_id'].count()
-print(yearly_counts)
-yearly_counts = yearly_counts.reset_index(name='counts')
-print(yearly_counts)
-surveys_plot = p9.ggplot(data=yearly_counts, mapping=p9.aes(x='year', y='counts',  color='species_id'))
-print(surveys_plot + p9.geom_line()) #this will create a line chart
 
 
+surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='weight', y='hindfoot_length'))
+surveys_plot +  p9.geom_point() # creates the plot
+
+
+## Chaining elements with plotnine
 surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='weight', y='hindfoot_length', color='species_id'))
-print(surveys_plot + p9.geom_point(alpha=0.1)) #draw the plot with species id
-print(surveys_plot + p9.geom_point(alpha=0.1) + p9.facet_wrap("sex")) #split the plot by sex
-print(surveys_plot + p9.geom_point(alpha=0.1) + p9.facet_wrap("plot_id")) #split the plot by plot id
-print(surveys_plot + p9.geom_point(alpha=0.1) + p9.facet_grid("year ~ sex")) #split the plot by both sex and plot id
+(surveys_plot 
++ p9.geom_point() 
++ p9.xlab("Weight (g)") 
++ p9.scale_x_log10()
++ p9.theme_bw()
++ p9.theme(text=p9.element_text(size=16)))
+
 
 #%%
-##plotnine customization and bar graph
+## Other plots with plotnine
 
-surveys_complete = pd.read_csv('data/surveys.csv')
-surveys_complete = surveys_complete.dropna()
+# Boxplot
+surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='species_id', y='weight'))
+surveys_plot + p9.geom_boxplot()
+
+# Time series
+yearly_counts = surveys_complete.groupby(['year', 'species_id'])['species_id'].count()
+yearly_counts = yearly_counts.reset_index(name='counts')
+surveys_plot = p9.ggplot(data=yearly_counts, mapping=p9.aes(x='year', y='counts',  color='species_id'))
+surveys_plot + p9.geom_line()
+
+
+#%%
+##Split plots
+
+# facet_wrap
+surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='weight', y='hindfoot_length', color='species_id'))
+surveys_plot + p9.geom_point(alpha=0.1)
+surveys_plot + p9.geom_point(alpha=0.1) + p9.facet_wrap("plot_id")
+
+
+# facet_grid
+# only select the years of interest
+survey_2000 = surveys_complete[surveys_complete["year"].isin([2000, 2001])]
+
+
+(p9.ggplot(data=survey_2000,
+           mapping=p9.aes(x='weight',
+                          y='hindfoot_length',
+                          color='species_id'))
+    + p9.geom_point(alpha=0.1)
+    + p9.facet_grid("year ~ sex")
+)
+
+
+
+#%%
+##Further Customizations
+
+# Change text angle
 surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='factor(year)'))
-print(surveys_plot + p9.geom_bar()) #this will generate a bar graph
-print(surveys_plot + p9.geom_bar() + p9.theme_bw()  + p9.theme(axis_text_x = p9.element_text(angle=90)))
+surveys_plot + p9.geom_bar()
+surveys_plot + p9.geom_bar() + p9.theme_bw()  + p9.theme(axis_text_x = p9.element_text(angle=90))
 
+
+
+# custom theme and categorical variable with 'factor' function
 my_custom_theme = p9.theme(axis_text_x = p9.element_text(color="grey", size=10, angle=90, hjust=.5), axis_text_y = p9.element_text(color="grey", size=10))
 surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='factor(year)'))
-print(surveys_plot + p9.geom_bar() + my_custom_theme)
+surveys_plot + p9.geom_bar() + my_custom_theme
 
-my_plot = surveys_plot + p9.geom_bar() + my_custom_theme
-my_plot.save("data/my_bar_graph.png", width=10, height=10, dpi=300) #save the graph to current directory
-
+# Saving
+my_plot = (p9.ggplot(data=surveys_complete,
+           mapping=p9.aes(x='weight', y='hindfoot_length', color='species_id'))
+    + p9.geom_point()
+    
+)
+my_plot.save("my_bar_graph.png", width=10, height=10, dpi=300) 
 
