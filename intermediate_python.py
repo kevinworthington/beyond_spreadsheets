@@ -29,15 +29,17 @@ print("\n")
 print('the type of 10+10:', type(10+10))
 print('the type of 10+10.0:', type(10+10.0))
 print("the type of 10*10.0:", type(10*10.0))
+
 try:
     print("the type of 10+'10.0':", type(10+'10.0'))
 except Exception as e:
     print("the type of 10+'10.0':", e)
+    
 print("the type of '10.0'+'10':", type('10.0'+'10'))
 print("the result of '10.0'+'10':", '10.0'+'10')
 
 #%%
-##read the survey dataset from data directory using the pandas function, read_csv, and check the data types of columns in pandas dataframe
+## read the survey dataset from data directory using the pandas function, read_csv, and check the data types of columns in pandas dataframe
 ## then practice changing the data types for different columns
 
 
@@ -45,12 +47,16 @@ surveys_df = pd.read_csv("data/surveys.csv") #load the dataframe using pandas
 print('type of surveys_df:', type(surveys_df), '\n')  
 print('type of each column in surveys_df:')
 print(surveys_df.dtypes)
-print('\ntype of sex:', surveys_df['sex'].dtype)
-print('type of record_id:', surveys_df['record_id'].dtype) #this will work
+
+print('type of sex:', surveys_df['sex'].dtype)
+
+# this will work for changing the data type of record_id
+print('type of record_id:', surveys_df['record_id'].dtype) 
 surveys_df['record_id'] = surveys_df['record_id'].astype('float64')
 print('type of record_id:', surveys_df['record_id'].dtype)
 
-print('type of plot_id:', surveys_df['plot_id'].dtype) #this will not work. think about what is the reason
+# this will not work for changing the data type of plot_id. think about what is the reason
+print('type of plot_id:', surveys_df['plot_id'].dtype)
 surveys_df.plot_id.astype("float")
 print('type of plot_id:', surveys_df['plot_id'].dtype)
 
@@ -62,7 +68,6 @@ print(surveys_df)
 df_na = surveys_df.dropna() #remove rows with missing values in dataframe
 print(df_na)
 df_na.to_csv('data/surveys_complete.csv', index=False)  #save the new dataframe to a csv file
-print()
 print(os.listdir('data'))
 
 #%%
@@ -139,6 +144,7 @@ def this_is_the_function_name(input_argument1, input_argument2): #this line will
 
 this_is_the_function_name(2, 5)
 
+#%%
 def one_year_csv_writer(this_year, all_data):
     """
     Writes a csv file for data from a given year.
@@ -158,6 +164,7 @@ surveys_df = pd.read_csv('data/surveys.csv')
 one_year_csv_writer(2002, surveys_df) #pass the year and dataframe to the 'one_year_csv_writer' function
 print(os.listdir('data'))
 
+#%%
 def yearly_data_csv_writer(start_year, end_year, all_data):
     """
     Writes separate CSV files for each year of data.
