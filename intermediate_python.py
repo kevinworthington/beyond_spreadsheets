@@ -7,11 +7,11 @@ Created on Thu Oct 20 00:31:17 2022
 
 @author: sirui qi
 
-this python is divided into cells by the "#%%", and each cell corresponds to one part of exercise in intermediate python workshop 
+This python is divided into cells by the "#%%", and each cell corresponds to one part of an exercise in the Intermediate Python workshop.
 
-please run this cell before following cells, this cell wiil help you import all needed packages in following cells
+Please run this cell first. This cell will help you import all needed packages in following cells.
 
-use the "run the current cell and go to the next cell" button on upper toolbar, and its hot key is "shirft + enter"
+Use the "run the current cell and go to the next cell" button on upper toolbar, or use the shortcut "shift + enter".
 
 """
 import pandas as pd # Import the Panda package and name it as pd for convenience
@@ -37,8 +37,8 @@ print("the type of '10.0'+'10':", type('10.0'+'10'))
 print("the result of '10.0'+'10':", '10.0'+'10')
 
 #%%
-##read the survey dataset from data directory using pandas, and check the data types of columns in pandas dataframe
-## then practice change the data types of columns
+##read the survey dataset from data directory using the pandas function, read_csv, and check the data types of columns in pandas dataframe
+## then practice changing the data types for different columns
 
 
 surveys_df = pd.read_csv("data/surveys.csv") #load the dataframe using pandas 
@@ -55,7 +55,7 @@ surveys_df.plot_id.astype("float")
 print('type of plot_id:', surveys_df['plot_id'].dtype)
 
 #%%
-##basic operations on dataframe and export the dataframe to a new file
+##basic operations on dataframes and exporting a dataframe to a new file
 
 surveys_df = pd.read_csv("data/surveys.csv") #reload the dataframe using pandas
 print(surveys_df)
