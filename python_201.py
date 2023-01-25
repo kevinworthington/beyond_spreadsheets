@@ -71,6 +71,37 @@ df_na.to_csv('data/surveys_complete.csv', index=False)  #save the new dataframe 
 print(os.listdir('data'))
 
 #%%
+##queries
+surveys_df
+surveys_df[(surveys_df.year == 1990) & (surveys_df.weight <= 8)]
+surveys_df[surveys_df.weight >= 0]
+surveys_df[surveys_df.weight.isnull()]
+surveys_df[surveys_df['species_id'].isin(['NL', 'DM'])]
+surveys_df[surveys_df.sex.isnull()]
+surveys_df[surveys_df.sex.isin(['F', 'M'])]
+surveys_df[(surveys_df.sex != 'F') & (surveys_df.sex != 'M')]
+surveys_df[pd.isnull(surveys_df).any(axis=1)]
+
+#%%
+from matplotlib import pyplot as plt
+empty_weights = surveys_df[pd.isnull(surveys_df['weight'])]['weight']
+empty_weights
+
+new_df = surveys_df[pd.isnull(surveys_df['sex'])]['sex']
+new_df
+new_df[:]='x'
+new_df
+
+surveys_df[(surveys_df.sex.isin(['F', 'M'])) & (surveys_df.weight > 0)][['sex','weight']]
+new_df = surveys_df[(surveys_df.sex.isin(['F', 'M'])) & (surveys_df.weight > 0)][['sex','weight']]
+new_df.mean()
+#ax = new_df.plot.bar(x='sex', y='weight', stacked=True)
+#ax
+
+df_mean=new_df.groupby(['sex']).agg({'weight':'mean'})
+plt.bar(df_mean.index, df_mean['weight'])
+plt.show()
+#%%
 ##load two dataframes and concatenate
 
 surveys_df = pd.read_csv("data/surveys.csv")
@@ -207,7 +238,6 @@ surveys_plot = p9.ggplot(data=surveys_complete, mapping=p9.aes(x='weight', y='hi
 + p9.scale_x_log10()
 + p9.theme_bw()
 + p9.theme(text=p9.element_text(size=16)))
-
 
 #%%
 ## Other plots with plotnine
