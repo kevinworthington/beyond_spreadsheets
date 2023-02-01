@@ -26,7 +26,7 @@ import json
 #%%
 ## check the existence of a file and unzip it
 
-url = 'http://bit.ly/python-oct13'
+url = 'http://bit.ly/python-feb2'
 zip_file_name = wget.download(url) #wget will create duplicates when downloading the existed file
 print('download file name:',zip_file_name)
 directory_name = 'my_data'
