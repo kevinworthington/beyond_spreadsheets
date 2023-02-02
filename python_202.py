@@ -394,5 +394,56 @@ iter1 = iter(list1)
 print(next(iter1))
 #%%
 ##Further Customizations
+#%%
+##Further Customizations
 
+url = 'http://bit.ly/python-oct13' 
+zip_file_name = wget.download(url)
+print('download file name:',zip_file_name)
+directory_name = 'my_data' 
+if os.path.exists(zip_file_name):
+    print(zip_file_name+' exist!')
+    print('unzipping files')
+    zip_ref = zipfile.ZipFile(zip_file_name, 'r')
+    zip_ref.extractall(directory_name)
+    zip_ref.close()
+    print('files extracted to '+directory_name)
+
+#%%
+
+for i in range(5):
+    file1 = open('write_the_file1.txt', 'a')
+    file1.write('hello world !\n')
+    
+    file2 = open('write_the_file2.txt', 'a')
+    file2.write('hello world !\n')
+    file2.close()
+    
+    with open ('write_the_file3.txt', 'a') as file3:
+        file3.write('hello world !\n')
+
+#%%
+
+zip_ref = zipfile.ZipFile(zip_file_name, 'r')
+zip_ref.extractall(directory_name)
+zip_ref.close()
+
+with zipfile.ZipFile(zip_file_name, 'r') as zip_ref:
+    zip_ref.extractall(directory_name)
+
+#%%
+print ('The current working directory is ' + os.getcwd())
+
+path = 'tmp/year'
+if not os.path.exists(path):
+    print(path + ' is being created')
+    os.makedirs(path)
+else:
+    print(path + ' already exists')
+    
+#%%
+os.chdir(path)
+print ('The current working directory is ' + os.getcwd())
+os.chdir('../..')
+print ('The current working directory is ' + os.getcwd())
 
